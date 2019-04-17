@@ -1,0 +1,11 @@
+# PhpStorm local config files
+.idea/*
+!.idea/inspectionProfiles
+vendor/
+composer.phar
+data/
+build/
+.php_cs.cache
+composer.lock
+imposter.log
+.phpunit.result.cache

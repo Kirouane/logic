@@ -1,0 +1,11 @@
+{
+    "require-dev": {
+        "phpunit/phpunit": "^8.1"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "Logic\\": "src/"
+        }
+    }
+}
