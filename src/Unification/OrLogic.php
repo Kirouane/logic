@@ -5,7 +5,7 @@ namespace Logic\Unification;
 use Logic\Solution;
 use Logic\Solutions;
 
-class AndLogic
+class OrLogic
 {
     public function unify(Solutions $solutionsA, Solutions $solutionsB)
     {

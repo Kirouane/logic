@@ -2,8 +2,8 @@
 
 
 use Logic\Constant;
-use Logic\Option;
-use Logic\Options;
+use Logic\Solution;
+use Logic\Solutions;
 use Logic\Unification\AndLogic;
 use Logic\Variable;
 use PHPUnit\Framework\TestCase;
@@ -14,26 +14,26 @@ class AndLogicTest extends TestCase
     {
         return [
             [
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Z', 'mike')
                     ])
                 ]),
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Z', 'john'),
                         new Variable('Who', 'mike')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who', 'paul')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who', 'laure')
                     ]),
 
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'charles'),
                         new Variable('Who', 'jean')
                     ])
@@ -50,39 +50,39 @@ class AndLogicTest extends TestCase
                 ],
             ],
             [
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Who1', 'john'),
                         new Variable('Z', 'mike')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Who1', 'mike'),
                         new Variable('Z', 'paul')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Who1', 'mike'),
                         new Variable('Z', 'laure')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Who1', 'charles'),
                         new Variable('Z', 'jean')
                     ])
                 ]),
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Z', 'john'),
                         new Variable('Who2', 'mike')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who2', 'paul')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who2', 'laure')
                     ]),
 
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'charles'),
                         new Variable('Who2', 'jean')
                     ])
@@ -101,14 +101,14 @@ class AndLogicTest extends TestCase
                 ],
             ],
             [
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Constant('john', 'Const1'),
                         new Variable('Z', 'mike')
                     ])
                 ]),
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Constant('paul', 'Const2'),
                     ])
@@ -122,27 +122,27 @@ class AndLogicTest extends TestCase
                 ],
             ],
             [
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Constant('john', 'Const1'),
                         new Variable('Z', 'mike')
                     ])
                 ]),
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Z', 'john'),
                         new Variable('Who', 'mike')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who', 'paul')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'mike'),
                         new Variable('Who', 'laure')
                     ]),
 
-                    new Option([
+                    new Solution([
                         new Variable('Z', 'charles'),
                         new Variable('Who', 'jean')
                     ])
@@ -161,19 +161,19 @@ class AndLogicTest extends TestCase
                 ],
             ],
             [
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Variable('Who', 'red'),
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Who', 'blue')
                     ]),
-                    new Option([
+                    new Solution([
                         new Variable('Who', 'green')
                     ])
                 ]),
-                new Options([
-                    new Option([
+                new Solutions([
+                    new Solution([
                         new Constant('green', 'Const1'),
                     ])
                 ]),

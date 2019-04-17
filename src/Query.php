@@ -8,9 +8,9 @@ class Query extends \ArrayObject
 {
 
     /**
-     * @var Options
+     * @var Solutions
      */
-    private $options;
+    private $solutions;
 
     /**
      * Query constructor.
@@ -19,33 +19,33 @@ class Query extends \ArrayObject
     {
         $arguments = [];
         foreach ($input as $argument) {
+
             if (!$argument instanceof Argument) {
-                $argument = new Constant($argument);
+
+                if (substr($argument, '0', 1) === '_') {
+                    $argument = new Variable($argument);
+                } else {
+                    $argument = new Constant($argument);
+                }
             }
             $arguments[] = $argument;
         }
         parent::__construct($arguments);
-        $this->options = new Options();
+        $this->solutions = new Solutions();
     }
 
 
-    public function appendOption(Option $rowResult)
+    public function getSolutions()
     {
-        $this->options[] = $rowResult;
+        return $this->solutions;
     }
 
 
-    public function getOptions()
-    {
-        return $this->options;
-    }
-
-
-    public function filterOptions(\Closure $function)
+    public function filterSolutions(\Closure $function)
     {
 
         $rows = [];
-        foreach ($this->options as $item) {
+        foreach ($this->solutions as $item) {
             $r = [];
             foreach ($this as $arg) {
                 if ($arg instanceof Variable) {
@@ -60,7 +60,7 @@ class Query extends \ArrayObject
             ];
         }
 
-        $filtered = new Options();
+        $filtered = new Solutions();
 
         foreach ($rows as $row) {
             if ($function(...$row['data'])) {
@@ -68,40 +68,23 @@ class Query extends \ArrayObject
             }
         }
 
-        $this->options = $filtered;
+        $this->solutions = $filtered;
     }
 
     public function apply($clause)
     {
         $clause($this);
-        return $this->options;
+        return $this->solutions;
     }
 
     public function argumentExists($argumentName)
     {
         foreach ($this as $argument) {
-            if ($argumentName == $argument->getName()) {
+            if ($argumentName === $argument->getName()) {
                 return true;
             }
         }
 
         return false;
-    }
-
-    public function setOptions(Options $options)
-    {
-        $newOptions = new Options();
-        foreach ($options as $option) {
-            $newOption = new Option();
-            /** @var Argument $argument */
-            foreach ($option as $argument) {
-                if ($this->argumentExists($argument->getName())) {
-                    $newOption[] = $argument;
-                }
-            }
-
-            $newOptions[] = $newOption;
-        }
-        $this->options = $newOptions;
     }
 }

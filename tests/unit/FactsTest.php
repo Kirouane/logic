@@ -10,9 +10,9 @@ class FactsTest extends TestCase
     public function queryOneArgementWithConstantProvider()
     {
         return [
-            [['red'], true, []],
-            [['yellow'], false, []],
-            [['green'], true, []]
+            [['red'], true],
+            [['yellow'], false],
+            [['green'], true]
         ];
     }
 
@@ -20,16 +20,15 @@ class FactsTest extends TestCase
      * @test
      * @dataProvider queryOneArgementWithConstantProvider
      */
-    public function queryOneArgementWithConstant($query, $expected, $expectedResult)
+    public function queryOneArgementWithConstant($query, $expected)
     {
         $color = new Facts('color', 1);
 
-        $color->is(['blue']);
-        $color->is(['red']);
-        $color->is(['green']);
+        $color->is('blue');
+        $color->is('red');
+        $color->is('green');
 
-        $query = new Query($query);
-        self::assertSame($expected, $color($query));
+        self::assertSame($expected, $color(...$query)->count() > 0);
     }
 
     public function queryTwoArgementWithConstantProvider()
@@ -50,11 +49,11 @@ class FactsTest extends TestCase
     {
         $father = new Facts('father', 2);
 
-        $father->is(['alice', 'mike']);
-        $father->is(['pierre', 'paul']);
-        $father->is(['robin', 'laure']);
+        $father->is('alice', 'mike');
+        $father->is('pierre', 'paul');
+        $father->is('robin', 'laure');
 
-        self::assertSame($expected, $father(new Query($query)));
+        self::assertSame($expected, $father(...$query)->count() > 0);
     }
 
 
@@ -78,7 +77,7 @@ class FactsTest extends TestCase
             $this->expectException(\Exception::class);
         }
         $father = new Facts('father', $arity);
-        self::assertNull($father->is($arguments));
+        self::assertNull($father->is(...$arguments));
     }
 
     /**
@@ -88,19 +87,18 @@ class FactsTest extends TestCase
     {
         $color = new Facts('color', 1);
 
-        $color->is(['blue']);
-        $color->is(['red']);
-        $color->is(['green']);
+        $color->is('blue');
+        $color->is('red');
+        $color->is('green');
 
-        $query = new Query([new Variable('X')]);
-        self::assertSame(true, $color($query));
+        self::assertSame(true, count($color('_X')) > 0);
         self::assertSame(
             [
-                ['X' => 'blue'],
-                ['X' => 'red'],
-                ['X' => 'green']
+                ['_X' => 'blue'],
+                ['_X' => 'red'],
+                ['_X' => 'green']
             ],
-            $query->getOptions()->toArray()
+            $color('_X')->toArray()
         );
     }
 
@@ -112,18 +110,17 @@ class FactsTest extends TestCase
     {
         $father = new Facts('father', 2);
 
-        $father->is(['john', 'mike']);
-        $father->is(['john', 'paul']);
-        $father->is(['robin', 'laure']);
+        $father->is('john', 'mike');
+        $father->is('john', 'paul');
+        $father->is('robin', 'laure');
 
-        $query = new Query(['john', new Variable('X')]);
-        self::assertSame(true, $father($query));
+        self::assertSame(true, $father('john', '_X')->count() > 0);
         self::assertSame(
             [
-                ['X' => 'mike'],
-                ['X' => 'paul']
+                ['_X' => 'mike'],
+                ['_X' => 'paul']
             ],
-            $query->getOptions()->toArray()
+            $father('john', '_X')->toArray()
         );
     }
 
@@ -135,19 +132,17 @@ class FactsTest extends TestCase
     {
         $father = new Facts('father', 2);
 
-        $father->is(['john', 'mike']);
-        $father->is(['john', 'paul']);
-        $father->is(['robin', 'laure']);
+        $father->is('john', 'mike');
+        $father->is('john', 'paul');
+        $father->is('robin', 'laure');
 
-        $query = new Query([new Variable('X'), new Variable('Y')]);
-        self::assertSame(true, $father($query));
         self::assertSame(
             [
-                ['X' => 'john', 'Y' => 'mike'],
-                ['X' => 'john', 'Y' => 'paul'],
-                ['X' => 'robin', 'Y' => 'laure']
+                ['_X' => 'john', '_Y' => 'mike'],
+                ['_X' => 'john', '_Y' => 'paul'],
+                ['_X' => 'robin', '_Y' => 'laure']
             ],
-            $query->getOptions()->toArray()
+            $father('_X', '_Y')->toArray()
         );
     }
 

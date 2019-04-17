@@ -2,10 +2,10 @@
 
 
 use Logic\Constant;
-use Logic\Option;
+use Logic\Solution;
 use Logic\Variable;
 
-class OptionTest extends \PHPUnit\Framework\TestCase
+class SolutionTest extends \PHPUnit\Framework\TestCase
 {
 
 
@@ -13,22 +13,22 @@ class OptionTest extends \PHPUnit\Framework\TestCase
     {
         return [
             [
-                new Option([
+                new Solution([
                     new Variable('Who1', 'john'),
                     new Variable('Z', 'mike')
                 ]),
-                new Option([
+                new Solution([
                     new Variable('Z', 'john'),
                     new Variable('Who2', 'mike')
                 ]),
                 []
             ],
             [
-                new Option([
+                new Solution([
                     new Variable('Who1', 'john'),
                     new Variable('Z', 'mike')
                 ]),
-                new Option([
+                new Solution([
                     new Variable('Z', 'mike'),
                     new Variable('Who2', 'paul')
                 ]),
@@ -40,10 +40,10 @@ class OptionTest extends \PHPUnit\Framework\TestCase
             ],
             [
 
-                new Option([
+                new Solution([
                     new Variable('Z', 'mike')
                 ]),
-                new Option([
+                new Solution([
                     new Variable('Z', 'john'),
                     new Variable('Who', 'mike')
                 ]),
@@ -51,10 +51,10 @@ class OptionTest extends \PHPUnit\Framework\TestCase
             ],
             [
 
-                new Option([
+                new Solution([
                     new Variable('Z', 'mike')
                 ]),
-                new Option([
+                new Solution([
                     new Variable('Z', 'mike'),
                     new Variable('Who', 'paul')
                 ]),
@@ -65,10 +65,10 @@ class OptionTest extends \PHPUnit\Framework\TestCase
             ],
             [
 
-                new Option([
+                new Solution([
                     new Variable('Who', 'red')
                 ]),
-                new Option([
+                new Solution([
                     new Constant('red', '_123'),
                 ]),
                 [

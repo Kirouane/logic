@@ -4,7 +4,7 @@
 namespace Logic;
 
 
-class Option extends \ArrayObject
+class Solution extends \ArrayObject
 {
 
     public function toArray()
@@ -33,23 +33,23 @@ class Option extends \ArrayObject
         return $array;
     }
 
-    public function match(Option $optionB)
+    public function match(Solution $solutionB)
     {
-        if ($optionB->containsOnliConstants()) {
+        if ($solutionB->containsOnliConstants()) {
             return $this;
         }
 
         if ($this->containsOnliConstants()) {
-            return $optionB;
+            return $solutionB;
         }
 
 
-        $newOption = new Option();
+        $newSolution = new Solution();
         $matchExists = true;
         /** @var Variable $argument */
         foreach ($this as $index => $argument) {
             /** @var Variable $argumentB */
-            foreach ($optionB as $indexB => $argumentB) {
+            foreach ($solutionB as $indexB => $argumentB) {
                 if ($argument->getName() === $argumentB->getName()) {
 
                     if (!$argument->same($argumentB)) {
@@ -60,19 +60,19 @@ class Option extends \ArrayObject
         }
 
         if (!$matchExists) {
-            return $newOption;
+            return $newSolution;
         }
 
         foreach ($this as $index => $argument) {
-                $newOption[] = $argument;
+                $newSolution[$argument->getName()] = $argument;
 
         }
 
-        foreach ($optionB as $index => $argument) {
-                $newOption[] = $argument;
+        foreach ($solutionB as $index => $argument) {
+                $newSolution[$argument->getName()] = $argument;
         }
 
-        return $newOption;
+        return $newSolution;
 
     }
 

@@ -6,26 +6,28 @@ namespace Logic;
 
 use Logic\Unification\AndLogic;
 
-class Rule
+class RuleRunner
 {
+    /**
+     * @var Query
+     */
+    private $query;
+    /**
+     * @var callable
+     */
     private $rule;
-    private $name;
 
-    public function __construct($name, callable $rule)
+    public function __construct(Query $query, callable $rule)
     {
-        $this->rule = $rule;
-        $this->name = $name;
+        $this->query = $query;
+        $this->rule = $rule->bindTo($this);
+
     }
 
-    public function __invoke(...$queryArgs)
+    public function run()
     {
-        $query = new Query($queryArgs);
-        $runner = new RuleRunner($query, $this->rule);
-        return $runner->run();
-
         return $this->filterVariables(
-            ($this->rule)($this, ...$query),
-            $query
+            ($this->rule)(...$this->query)
         );
     }
 
@@ -34,14 +36,14 @@ class Rule
         return (new AndLogic())->unify($clauseA, $clauseB);
     }
 
-    private function filterVariables(Solutions $solutions, Query $query)
+    private function filterVariables(Solutions $solutions)
     {
         $newSolutions = new Solutions();
         foreach ($solutions as $solution) {
             $newSolution = new Solution();
             /** @var Argument $argument */
             foreach ($solution as $argument) {
-                if ($query->argumentExists($argument->getName())) {
+                if ($this->query->argumentExists($argument->getName())) {
                     $newSolution[$argument->getName()] = $argument;
                 }
             }
@@ -52,17 +54,17 @@ class Rule
     }
 
 
-    public function filterSolutions(Solutions $solutions, \Closure $function)
+    public function filter(Solutions $solutions, \Closure $function)
     {
 
         $rows = [];
         foreach ($solutions as $item) {
             $r = [];
-            foreach ($this as $arg) {
+            foreach ($this->query as $arg) {
                 if ($arg instanceof Variable) {
-                    $r[] = $item->find($arg->getName());
+                    $r[] = $item->find($arg->getName())->getValue();
                 } else {
-                    $r[] = $arg;
+                    $r[] = $arg->getValue();
                 }
             }
             $rows[] = [
@@ -81,5 +83,4 @@ class Rule
 
         return $filtered;
     }
-
 }
