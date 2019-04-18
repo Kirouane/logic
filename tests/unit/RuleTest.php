@@ -232,4 +232,156 @@ class RuleTest extends TestCase
             $country('blue', '_R2', '_R3')->toArray()
         );
     }
+
+    /**
+     * @test
+     */
+    public function orRule()
+    {
+        $father = new Facts('father', 2);
+        $father->is('john', 'mike');
+        $father->is('mike', 'paul');
+
+        $mother = new Facts('mother', 2);
+        $mother->is('lara', 'amelie');
+        $mother->is('pauline', 'alice');
+
+
+        $parent = new Rule('parent', function($x, $y) use($father, $mother) {
+            /** @var \Logic\RuleRunner $this */
+            return $this->orLogic(
+                $father($x, $y),
+                $mother($x, $y)
+            );
+        });
+
+        self::assertSame(
+            [
+                [
+                    '_X' => 'mike'
+                ],
+            ],
+            $parent('_X', 'paul')->toArray()
+        );
+
+        self::assertSame(
+            [
+                [
+                    '_X' => 'alice'
+                ],
+            ],
+            $parent('pauline', '_X')->toArray()
+        );
+
+        self::assertSame(
+            [
+                [
+                    '_X' => 'john',
+                    '_y' => 'mike',
+                ],
+                [
+                    '_X' => 'mike',
+                    '_y' => 'paul',
+                ],
+                [
+                    '_X' => 'lara',
+                    '_y' => 'amelie',
+                ],
+                [
+                    '_X' => 'pauline',
+                    '_y' => 'alice',
+                ],
+            ],
+            $parent('_X', '_y')->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function ancestor()
+    {
+        $father = new Facts('father', 2);
+
+        $father->is('achille', 'fabien');
+        $father->is('fabien', 'john');
+        $father->is('john', 'mike');
+        $father->is('mike', 'paul');
+        $father->is('mike', 'laure');
+        $father->is('charles', 'jean');
+
+        $ancestor = new Rule('ancestor', function($a, $b) use($father) {
+            /** @var \Logic\RuleRunner $this */
+            return $this->orLogic(
+                $father($a, $b),
+                $this->andLogic($father($a, '_X'), $father('_X', $b)),
+                $this->andLogic($father($a, '_X'), $father('_X', '_Y'), $father('_Y', $b)),
+                $this->andLogic($father($a, '_X'), $father('_X', '_Y'), $father('_Y', '_Z'), $father('_Z', $b))
+            );
+        });
+
+        self::assertSame(
+            [
+                [
+                    '_R' => 'mike',
+                ],
+                [
+                    '_R' => 'john',
+                ],
+                [
+                    '_R' => 'fabien',
+                ],
+                [
+                    '_R' => 'achille'
+                ]
+            ],
+            $ancestor('_R', 'paul')->toArray()
+        );
+    }
+
+
+    public function ancestorWithRecursion()
+    {
+        $father = new Facts('father', 2);
+
+        $father->is('achille', 'fabien');
+        $father->is('fabien', 'john');
+        $father->is('nathan', 'john');
+        $father->is('john', 'mike');
+        $father->is('mike', 'paul');
+        $father->is('mike', 'laure');
+        $father->is('charles', 'jean');
+
+        $i = 1;
+
+        $ancestor = new Rule('ancestor', function($a, $b) use($father, &$i) {
+            $i++;
+            $v = '_X' .mt_rand();
+
+            if ($i > 4) {
+                return new \Logic\Solutions();
+            }
+
+            /** @var \Logic\RuleRunner $this */
+            return $this->orLogic(
+                $father($a, $b),
+                $this->andLogic($father->prepare($a, $v), $this->prepare($v, $b))
+            );
+        });
+
+        self::assertSame(
+            [
+                [
+                    '_R' => 'mike',
+                ],
+                [
+                    '_R' => 'john',
+                ],
+                [
+                    '_R' => 'fabien',
+                ]
+            ],
+            $ancestor('_R', 'paul')->toArray()
+        );
+    }
 }

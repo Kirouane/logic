@@ -4,7 +4,7 @@
 namespace Logic;
 
 
-class Query extends \ArrayObject
+class Arguments extends \ArrayObject
 {
 
     /**
@@ -40,36 +40,6 @@ class Query extends \ArrayObject
         return $this->solutions;
     }
 
-
-    public function filterSolutions(\Closure $function)
-    {
-
-        $rows = [];
-        foreach ($this->solutions as $item) {
-            $r = [];
-            foreach ($this as $arg) {
-                if ($arg instanceof Variable) {
-                    $r[] = $item->find($arg->getName());
-                } else {
-                    $r[] = $arg;
-                }
-            }
-            $rows[] = [
-                'data' => $r,
-                'item' => $item
-            ];
-        }
-
-        $filtered = new Solutions();
-
-        foreach ($rows as $row) {
-            if ($function(...$row['data'])) {
-                $filtered[] = $row['item'];
-            }
-        }
-
-        $this->solutions = $filtered;
-    }
 
     public function apply($clause)
     {

@@ -14,23 +14,23 @@ class SolutionTest extends \PHPUnit\Framework\TestCase
         return [
             [
                 new Solution([
-                    new Variable('Who1', 'john'),
-                    new Variable('Z', 'mike')
+                    'Who1' => new Variable('Who1', 'john'),
+                    'Z' => new Variable('Z', 'mike')
                 ]),
                 new Solution([
-                    new Variable('Z', 'john'),
-                    new Variable('Who2', 'mike')
+                    'Z' =>  new Variable('Z', 'john'),
+                    'Who2' => new Variable('Who2', 'mike')
                 ]),
                 []
             ],
             [
                 new Solution([
-                    new Variable('Who1', 'john'),
-                    new Variable('Z', 'mike')
+                    'Who1' => new Variable('Who1', 'john'),
+                    'Z' => new Variable('Z', 'mike')
                 ]),
                 new Solution([
-                    new Variable('Z', 'mike'),
-                    new Variable('Who2', 'paul')
+                    'Z' => new Variable('Z', 'mike'),
+                    'Who2' => new Variable('Who2', 'paul')
                 ]),
                 [
                     'Who1' => 'john',
@@ -41,22 +41,22 @@ class SolutionTest extends \PHPUnit\Framework\TestCase
             [
 
                 new Solution([
-                    new Variable('Z', 'mike')
+                    'Z' => new Variable('Z', 'mike')
                 ]),
                 new Solution([
-                    new Variable('Z', 'john'),
-                    new Variable('Who', 'mike')
+                    'Z' => new Variable('Z', 'john'),
+                    'Who' =>  new Variable('Who', 'mike')
                 ]),
                 []
             ],
             [
 
                 new Solution([
-                    new Variable('Z', 'mike')
+                    'Z' => new Variable('Z', 'mike')
                 ]),
                 new Solution([
-                    new Variable('Z', 'mike'),
-                    new Variable('Who', 'paul')
+                    'Z' => new Variable('Z', 'mike'),
+                    'Who' => new Variable('Who', 'paul')
                 ]),
                 [
                     'Z' => 'mike',
@@ -66,10 +66,10 @@ class SolutionTest extends \PHPUnit\Framework\TestCase
             [
 
                 new Solution([
-                    new Variable('Who', 'red')
+                    'Who' => new Variable('Who', 'red')
                 ]),
                 new Solution([
-                    new Constant('red', '_123'),
+                    '_123' => new Constant('red', '_123'),
                 ]),
                 [
                     'Who' => 'red'

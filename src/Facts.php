@@ -2,7 +2,7 @@
 
 namespace Logic;
 
-class Facts extends \ArrayObject
+class Facts extends \ArrayObject implements Clause
 {
     /**
      * @var string
@@ -41,10 +41,9 @@ class Facts extends \ArrayObject
     public function __invoke(...$arguments)
     {
         $solutions = new Solutions();
-        $query = new Query($arguments);
-
+        /** @var Fact $fact */
         foreach ($this as $fact) {
-            $solution = $fact->matches($query);
+            $solution = $fact->matches(new Arguments($arguments));
             if ($solution->count()) {
                 $solutions[] = $solution;
             }
@@ -52,5 +51,13 @@ class Facts extends \ArrayObject
 
         return $solutions;
     }
+
+    public function prepare(...$arguments): callable
+    {
+        return function() use($arguments) {
+            return ($this)(...$arguments);
+        };
+    }
+
 
 }

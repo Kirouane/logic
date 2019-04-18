@@ -16,26 +16,26 @@ class AndLogicTest extends TestCase
             [
                 new Solutions([
                     new Solution([
-                        new Variable('Z', 'mike')
+                        'Z' => new Variable('Z', 'mike')
                     ])
                 ]),
                 new Solutions([
                     new Solution([
-                        new Variable('Z', 'john'),
-                        new Variable('Who', 'mike')
+                        'Z' => new Variable('Z', 'john'),
+                        'Who' => new Variable('Who', 'mike')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who', 'paul')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who' => new Variable('Who', 'paul')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who', 'laure')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who' => new Variable('Who', 'laure')
                     ]),
 
                     new Solution([
-                        new Variable('Z', 'charles'),
-                        new Variable('Who', 'jean')
+                        'Z' => new Variable('Z', 'charles'),
+                        'Who' => new Variable('Who', 'jean')
                     ])
                 ]),
                 [
@@ -52,39 +52,39 @@ class AndLogicTest extends TestCase
             [
                 new Solutions([
                     new Solution([
-                        new Variable('Who1', 'john'),
-                        new Variable('Z', 'mike')
+                        'Who1' => new Variable('Who1', 'john'),
+                        'Z' => new Variable('Z', 'mike')
                     ]),
                     new Solution([
-                        new Variable('Who1', 'mike'),
-                        new Variable('Z', 'paul')
+                        'Who1' => new Variable('Who1', 'mike'),
+                        'Z' => new Variable('Z', 'paul')
                     ]),
                     new Solution([
-                        new Variable('Who1', 'mike'),
-                        new Variable('Z', 'laure')
+                        'Who1' => new Variable('Who1', 'mike'),
+                        'Z' => new Variable('Z', 'laure')
                     ]),
                     new Solution([
-                        new Variable('Who1', 'charles'),
-                        new Variable('Z', 'jean')
+                        'Who1' => new Variable('Who1', 'charles'),
+                        'Z' => new Variable('Z', 'jean')
                     ])
                 ]),
                 new Solutions([
                     new Solution([
-                        new Variable('Z', 'john'),
-                        new Variable('Who2', 'mike')
+                        'Z' => new Variable('Z', 'john'),
+                        'Who2' => new Variable('Who2', 'mike')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who2', 'paul')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who2' => new Variable('Who2', 'paul')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who2', 'laure')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who2' => new Variable('Who2', 'laure')
                     ]),
 
                     new Solution([
-                        new Variable('Z', 'charles'),
-                        new Variable('Who2', 'jean')
+                        'Z' => new Variable('Z', 'charles'),
+                        'Who2' => new Variable('Who2', 'jean')
                     ])
                 ]),
                 [
@@ -103,14 +103,14 @@ class AndLogicTest extends TestCase
             [
                 new Solutions([
                     new Solution([
-                        new Constant('john', 'Const1'),
-                        new Variable('Z', 'mike')
+                        'Const1' => new Constant('john', 'Const1'),
+                        'Z' => new Variable('Z', 'mike')
                     ])
                 ]),
                 new Solutions([
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Constant('paul', 'Const2'),
+                        'Z' => new Variable('Z', 'mike'),
+                        'Const2' => new Constant('paul', 'Const2'),
                     ])
                 ]),
                 [
@@ -124,27 +124,27 @@ class AndLogicTest extends TestCase
             [
                 new Solutions([
                     new Solution([
-                        new Constant('john', 'Const1'),
-                        new Variable('Z', 'mike')
+                        'Const1' => new Constant('john', 'Const1'),
+                        'Z' => new Variable('Z', 'mike')
                     ])
                 ]),
                 new Solutions([
                     new Solution([
-                        new Variable('Z', 'john'),
-                        new Variable('Who', 'mike')
+                        'Z' => new Variable('Z', 'john'),
+                        'Who' => new Variable('Who', 'mike')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who', 'paul')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who' => new Variable('Who', 'paul')
                     ]),
                     new Solution([
-                        new Variable('Z', 'mike'),
-                        new Variable('Who', 'laure')
+                        'Z' => new Variable('Z', 'mike'),
+                        'Who' => new Variable('Who', 'laure')
                     ]),
 
                     new Solution([
-                        new Variable('Z', 'charles'),
-                        new Variable('Who', 'jean')
+                        'Z' => new Variable('Z', 'charles'),
+                        'Who' => new Variable('Who', 'jean')
                     ])
                 ]),
                 [
@@ -163,29 +163,32 @@ class AndLogicTest extends TestCase
             [
                 new Solutions([
                     new Solution([
-                        new Variable('Who', 'red'),
+                        'Z' => new Variable('Who', 'red'),
                     ]),
                     new Solution([
-                        new Variable('Who', 'blue')
+                        'Z' => new Variable('Who', 'blue')
                     ]),
                     new Solution([
-                        new Variable('Who', 'green')
+                        'Z' => new Variable('Who', 'green')
                     ])
                 ]),
                 new Solutions([
                     new Solution([
-                        new Constant('green', 'Const1'),
+                        'Z' => new Constant('green', 'Const1'),
                     ])
                 ]),
                 [
                     [
-                        'Who' => 'red'
+                        'Who' => 'red',
+                        'Const1' => 'green'
                     ],
                     [
-                        'Who' => 'blue'
+                        'Who' => 'blue',
+                        'Const1' => 'green'
                     ],
                     [
-                        'Who' => 'green'
+                        'Who' => 'green',
+                        'Const1' => 'green'
                     ]
                 ],
             ]

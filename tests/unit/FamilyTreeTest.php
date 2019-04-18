@@ -1,12 +1,10 @@
 <?php
 
 
-use Logic\Constant;
 use Logic\Logic;
-use Logic\Solution;
-use Logic\Variable;
+use PHPUnit\Framework\TestCase;
 
-class FamilyTree extends \PHPUnit\Framework\TestCase
+class FamilyTreeTest extends TestCase
 {
     /**
      * @test
@@ -68,8 +66,27 @@ class FamilyTree extends \PHPUnit\Framework\TestCase
         $child->is('dominique', 'charlotte');
 
 
-        $parent = $logic->rule('parent', function($_, $x, $y) use($child) {
+        $parent = $logic->rule('parent', function($x, $y) use($child) {
             return $child($y, $x);
         });
+
+        $ancestor = $logic->rule('ancestor', function($x, $y) use($parent) {
+            $o = $parent($x, '_Z');
+
+            if (!count($o)) {
+                return new \Logic\Solutions();
+            }
+
+            /** @var \Logic\RuleRunner $this */
+            return $this->orLogic(
+                $parent($x, $y),
+                $this->andLogic(
+                    $parent($x, '_Z'),
+                    $this('_Z', $y)
+                )
+            );
+        });
+
+        self::assertSame(1, 1);
     }
 }

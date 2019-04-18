@@ -5,35 +5,104 @@ namespace Logic;
 
 
 use Logic\Unification\AndLogic;
+use Logic\Unification\OrLogic;
 
 class RuleRunner
 {
     /**
-     * @var Query
+     * @var Arguments
      */
-    private $query;
+    private $arguments;
     /**
      * @var callable
      */
+    private $function;
+    /**
+     * @var Rule
+     */
     private $rule;
 
-    public function __construct(Query $query, callable $rule)
+    public function __construct(Rule $rule, Arguments $arguments, callable $function)
     {
-        $this->query = $query;
-        $this->rule = $rule->bindTo($this);
+        $this->arguments = $arguments;
+        $this->function = $function->bindTo($this);
+        $this->rule = $rule;
+    }
 
+    public function __invoke(...$argments)
+    {
+        return ($this->rule)(...$argments);
     }
 
     public function run()
     {
         return $this->filterVariables(
-            ($this->rule)(...$this->query)
+            ($this->function)(...$this->arguments)
         );
     }
 
-    public function andLogic($clauseA, $clauseB)
+    public function prepare(...$arguments): callable
     {
-        return (new AndLogic())->unify($clauseA, $clauseB);
+        return function() use($arguments) {
+            return ($this->rule)(...$arguments);
+        };
+    }
+
+
+    public function andLogic(...$clauses)
+    {
+        if (count($clauses) < 2) {
+            throw new \InvalidArgumentException('And operator need at least 2 clauses');
+        }
+
+        $result = reset($clauses);
+
+        if (is_callable($result) && !$result instanceof Clause) {
+            $result = $result();
+            if (!$result->count()) {
+                return new Solutions();
+            }
+        }
+
+        $unification = new AndLogic();
+        $i = 0;
+        foreach ($clauses as $clause) {
+            $i++;
+            if ($i === 1) {
+                continue;
+            }
+
+            if (is_callable($clause) && !$clause instanceof Clause) {
+                $clause = $clause();
+                if (!$clause->count()) {
+                    return new Solutions();
+                }
+            }
+
+            $result = $unification->unify($result, $clause);
+        }
+
+        return $result;
+    }
+
+
+    public function orLogic(...$clauses)
+    {
+        if (count($clauses) < 2) {
+            throw new \InvalidArgumentException('And operator need at least 2 clauses');
+        }
+
+        $result = reset($clauses);
+        $unification = new OrLogic();
+        foreach ($clauses as $clause) {
+            if ($clause === $result) {
+                continue;
+            }
+
+            $result = $unification->unify($result, $clause);
+        }
+
+        return $result;
     }
 
     private function filterVariables(Solutions $solutions)
@@ -43,7 +112,7 @@ class RuleRunner
             $newSolution = new Solution();
             /** @var Argument $argument */
             foreach ($solution as $argument) {
-                if ($this->query->argumentExists($argument->getName())) {
+                if ($this->arguments->argumentExists($argument->getName())) {
                     $newSolution[$argument->getName()] = $argument;
                 }
             }
@@ -60,9 +129,9 @@ class RuleRunner
         $rows = [];
         foreach ($solutions as $item) {
             $r = [];
-            foreach ($this->query as $arg) {
+            foreach ($this->arguments as $arg) {
                 if ($arg instanceof Variable) {
-                    $r[] = $item->find($arg->getName())->getValue();
+                    $r[] = $item[$arg->getName()]->getValue();
                 } else {
                     $r[] = $arg->getValue();
                 }
@@ -83,4 +152,86 @@ class RuleRunner
 
         return $filtered;
     }
+
 }
+
+/*
+ * array (
+  0 =>
+  array (
+    '_X2078162237' => 'achille',
+    '_X580233888' => 'fabien',
+  ),
+  1 =>
+  array (
+    '_X2078162237' => 'fabien',
+    '_X580233888' => 'john',
+  ),
+  2 =>
+  array (
+    '_X2078162237' => 'nathan',
+    '_X580233888' => 'john',
+  ),
+  3 =>
+  array (
+    '_X2078162237' => 'john',
+    '_X580233888' => 'mike',
+  ),
+  4 =>
+  array (
+    '_X2078162237' => 'mike',
+    '_X580233888' => 'paul',
+  ),
+  5 =>
+  array (
+    '_X2078162237' => 'mike',
+    '_X580233888' => 'laure',
+  ),
+  6 =>
+  array (
+    '_X2078162237' => 'charles',
+    '_X580233888' => 'jean',
+  ),
+)
+ */
+
+////////////////////
+/**
+ * array (
+0 =>
+array (
+'_X580233888' => 'achille',
+'_X467560820' => 'fabien',
+),
+1 =>
+array (
+'_X580233888' => 'fabien',
+'_X467560820' => 'john',
+),
+2 =>
+array (
+'_X580233888' => 'nathan',
+'_X467560820' => 'john',
+),
+3 =>
+array (
+'_X580233888' => 'john',
+'_X467560820' => 'mike',
+),
+4 =>
+array (
+'_X580233888' => 'mike',
+'_X467560820' => 'paul',
+),
+5 =>
+array (
+'_X580233888' => 'mike',
+'_X467560820' => 'laure',
+),
+6 =>
+array (
+'_X580233888' => 'charles',
+'_X467560820' => 'jean',
+),
+)
+ */

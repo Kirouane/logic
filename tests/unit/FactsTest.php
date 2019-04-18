@@ -1,8 +1,5 @@
 <?php
 use Logic\Facts;
-use Logic\Query;
-use Logic\Variable;
-use Logic\VariableCombination;
 use PHPUnit\Framework\TestCase;
 
 class FactsTest extends TestCase
@@ -143,6 +140,25 @@ class FactsTest extends TestCase
                 ['_X' => 'robin', '_Y' => 'laure']
             ],
             $father('_X', '_Y')->toArray()
+        );
+    }
+
+    /**
+     * @test
+     */
+    public function queryTwoArgementWithSameTwoVariable()
+    {
+        $father = new Facts('father', 2);
+
+        $father->is('john', 'mike');
+        $father->is('john', 'paul');
+        $father->is('robin', 'robin');
+
+        self::assertSame(
+            [
+                ['_X' => 'robin']
+            ],
+            $father('_X', '_X')->toArray()
         );
     }
 

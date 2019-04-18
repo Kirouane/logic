@@ -10,7 +10,6 @@ class Fact extends \ArrayObject
     {
         parent::__construct(array_map(function($argument) {
             return new Constant($argument);
-
         }, $arguments));
     }
 
@@ -22,6 +21,11 @@ class Fact extends \ArrayObject
             if ($query[$i] instanceof Variable) {
                 $variable = clone $query[$i];
                 $variable->setValue($argument->getValue());
+
+                if (isset($solution[$variable->getName()]) && $solution[$variable->getName()]->getValue() !== $variable->getValue()) {
+                    return new Solution();
+                }
+
                 $solution[$variable->getName()] = $variable;
             } elseif (!$argument->equals($query[$i])) {
                 return new Solution();
