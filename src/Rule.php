@@ -18,6 +18,20 @@ class Rule implements Clause
     public function __invoke(...$argments)
     {
         $runner = new RuleRunner($this, new Arguments($argments), $this->rule);
-        return $runner->run();
+        try {
+            return $runner->run();
+        } catch (\Error $e) {
+            if ($this->isMaximumFunctionNesting($e)) {
+                return new Solutions();
+            }
+
+            throw $e;
+        }
+
+    }
+
+    private function isMaximumFunctionNesting(\Error $e)
+    {
+        return strpos($e->getMessage(), 'Maximum function nesting level of') !== false;
     }
 }

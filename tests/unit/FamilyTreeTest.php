@@ -71,22 +71,18 @@ class FamilyTreeTest extends TestCase
         });
 
         $ancestor = $logic->rule('ancestor', function($x, $y) use($parent) {
-            $o = $parent($x, '_Z');
 
-            if (!count($o)) {
-                return new \Logic\Solutions();
-            }
-
-            /** @var \Logic\RuleRunner $this */
+            $z = $this->generateVariable('_Z');
             return $this->orLogic(
                 $parent($x, $y),
-                $this->andLogic(
-                    $parent($x, '_Z'),
-                    $this('_Z', $y)
-                )
+                $this->andLogic($parent($x, $z), $this->prepare($z, $y))
             );
         });
 
+
         self::assertSame(1, 1);
     }
+
+
+
 }

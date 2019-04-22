@@ -43,6 +43,7 @@ class RuleRunner
 
     public function prepare(...$arguments): callable
     {
+
         return function() use($arguments) {
             return ($this->rule)(...$arguments);
         };
@@ -153,85 +154,9 @@ class RuleRunner
         return $filtered;
     }
 
+    public function generateVariable($name)
+    {
+        return $name . mt_rand();
+    }
+
 }
-
-/*
- * array (
-  0 =>
-  array (
-    '_X2078162237' => 'achille',
-    '_X580233888' => 'fabien',
-  ),
-  1 =>
-  array (
-    '_X2078162237' => 'fabien',
-    '_X580233888' => 'john',
-  ),
-  2 =>
-  array (
-    '_X2078162237' => 'nathan',
-    '_X580233888' => 'john',
-  ),
-  3 =>
-  array (
-    '_X2078162237' => 'john',
-    '_X580233888' => 'mike',
-  ),
-  4 =>
-  array (
-    '_X2078162237' => 'mike',
-    '_X580233888' => 'paul',
-  ),
-  5 =>
-  array (
-    '_X2078162237' => 'mike',
-    '_X580233888' => 'laure',
-  ),
-  6 =>
-  array (
-    '_X2078162237' => 'charles',
-    '_X580233888' => 'jean',
-  ),
-)
- */
-
-////////////////////
-/**
- * array (
-0 =>
-array (
-'_X580233888' => 'achille',
-'_X467560820' => 'fabien',
-),
-1 =>
-array (
-'_X580233888' => 'fabien',
-'_X467560820' => 'john',
-),
-2 =>
-array (
-'_X580233888' => 'nathan',
-'_X467560820' => 'john',
-),
-3 =>
-array (
-'_X580233888' => 'john',
-'_X467560820' => 'mike',
-),
-4 =>
-array (
-'_X580233888' => 'mike',
-'_X467560820' => 'paul',
-),
-5 =>
-array (
-'_X580233888' => 'mike',
-'_X467560820' => 'laure',
-),
-6 =>
-array (
-'_X580233888' => 'charles',
-'_X467560820' => 'jean',
-),
-)
- */

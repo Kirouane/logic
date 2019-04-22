@@ -339,6 +339,9 @@ class RuleTest extends TestCase
         );
     }
 
+    /**
+     * @test
+     */
 
     public function ancestorWithRecursion()
     {
@@ -352,20 +355,11 @@ class RuleTest extends TestCase
         $father->is('mike', 'laure');
         $father->is('charles', 'jean');
 
-        $i = 1;
-
-        $ancestor = new Rule('ancestor', function($a, $b) use($father, &$i) {
-            $i++;
-            $v = '_X' .mt_rand();
-
-            if ($i > 4) {
-                return new \Logic\Solutions();
-            }
-
-            /** @var \Logic\RuleRunner $this */
+        $ancestor = new Rule('ancestor', function($a, $b) use($father) {
+            $z = $this->generateVariable('_Z');
             return $this->orLogic(
                 $father($a, $b),
-                $this->andLogic($father->prepare($a, $v), $this->prepare($v, $b))
+                $this->andLogic($father->prepare($a, $z), $this->prepare($z, $b))
             );
         });
 
@@ -375,10 +369,16 @@ class RuleTest extends TestCase
                     '_R' => 'mike',
                 ],
                 [
-                    '_R' => 'john',
+                    '_R' => 'achille',
                 ],
                 [
                     '_R' => 'fabien',
+                ],
+                [
+                    '_R' => 'nathan',
+                ],
+                [
+                    '_R' => 'john',
                 ]
             ],
             $ancestor('_R', 'paul')->toArray()
