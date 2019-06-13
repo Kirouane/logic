@@ -6,10 +6,9 @@ namespace Logic;
 
 class Variable extends Argument
 {
-
-    public function __construct($name, $value = null)
+    public function __construct($name = null, $value = null)
     {
-        $this->setName($name);
+        $this->setName($name ?: mt_rand());
         $this->setValue($value);
     }
 }

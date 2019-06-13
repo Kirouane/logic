@@ -154,9 +154,4 @@ class RuleRunner
         return $filtered;
     }
 
-    public function generateVariable($name)
-    {
-        return $name . mt_rand();
-    }
-
 }

@@ -2,6 +2,7 @@
 
 
 use Logic\Logic;
+use Logic\Variable;
 use PHPUnit\Framework\TestCase;
 
 class FamilyTreeTest extends TestCase
@@ -70,19 +71,56 @@ class FamilyTreeTest extends TestCase
             return $child($y, $x);
         });
 
-        $ancestor = $logic->rule('ancestor', function($x, $y) use($parent) {
+        $son = $logic->rule('son', function($x, $y) use($child, $man) {
+            return $this->andLogic($child($y, $x), $man($x));
+        });
 
-            $z = $this->generateVariable('_Z');
+        $daughter = $logic->rule('daughter', function($x, $y) use($child, $woman) {
+            return $this->andLogic($child($y, $x), $woman($x));
+        });
+
+        $ancestor = $logic->rule('ancestor', function($x, $y) use($parent) {
+            $z = new Variable();
             return $this->orLogic(
                 $parent($x, $y),
                 $this->andLogic($parent($x, $z), $this->prepare($z, $y))
             );
         });
 
+        self::assertSame(
+            [
+                [
+                    '_R' => 'baptiste',
+                ]
+            ],
+            $son('_R', 'cedric')->toArray()
+        );
 
-        self::assertSame(1, 1);
+        self::assertSame(
+            [
+                [
+                    '_R' => 'brigitte',
+                ]
+            ],
+            $daughter('_R', 'cedric')->toArray()
+        );
+
+        self::assertSame(
+            [
+                [
+                    '_R' => 'brigitte',
+                ],
+                [
+                    '_R' => 'baptiste',
+                ],
+                [
+                    '_R' => 'andre',
+                ],
+                [
+                    '_R' => 'augustine',
+                ]
+            ],
+            $ancestor('_R', 'cedric')->toArray()
+        );
     }
-
-
-
 }

@@ -2,6 +2,8 @@
 
 use Logic\Facts;
 use Logic\Rule;
+use Logic\RuleRunner;
+use Logic\Variable;
 use PHPUnit\Framework\TestCase;
 
 class RuleTest extends TestCase
@@ -20,7 +22,7 @@ class RuleTest extends TestCase
 
 
         $grandfather = new Rule('grandfather', function($x, $y) use($father) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
                 $father('_Z', $y)
@@ -55,7 +57,7 @@ class RuleTest extends TestCase
 
 
         $grandfather = new Rule('grandfather', function($x, $y) use($father) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
                 $father('_Z', $y)
@@ -79,7 +81,7 @@ class RuleTest extends TestCase
 
 
         $grandfather = new Rule('grandfather', function($x, $y) use($father) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
                 $father('_Z', $y)
@@ -114,7 +116,7 @@ class RuleTest extends TestCase
         $color->is('green');
 
         $neighboor = new Rule('neighbour', function($x, $y) use($color) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
                 function($x, $y){
@@ -148,7 +150,7 @@ class RuleTest extends TestCase
         $color->is('green');
 
         $neighboor = new Rule('neighbour', function($x, $y) use($color) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
                 function($x, $y){
@@ -199,7 +201,7 @@ class RuleTest extends TestCase
         $color->is('green');
 
         $neighboor = new Rule('neighbour', function($x, $y) use($color) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
                 function($x, $y){
@@ -209,7 +211,7 @@ class RuleTest extends TestCase
         });
 
         $country = new Rule('country', function($x, $y, $z) use($neighboor) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->andLogic(
                 $this->andLogic($neighboor($x, $y), $neighboor($y, $z)),
                 $neighboor($x, $z)
@@ -248,7 +250,7 @@ class RuleTest extends TestCase
 
 
         $parent = new Rule('parent', function($x, $y) use($father, $mother) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->orLogic(
                 $father($x, $y),
                 $mother($x, $y)
@@ -311,7 +313,7 @@ class RuleTest extends TestCase
         $father->is('charles', 'jean');
 
         $ancestor = new Rule('ancestor', function($a, $b) use($father) {
-            /** @var \Logic\RuleRunner $this */
+            /** @var RuleRunner $this */
             return $this->orLogic(
                 $father($a, $b),
                 $this->andLogic($father($a, '_X'), $father('_X', $b)),
@@ -356,7 +358,7 @@ class RuleTest extends TestCase
         $father->is('charles', 'jean');
 
         $ancestor = new Rule('ancestor', function($a, $b) use($father) {
-            $z = $this->generateVariable('_Z');
+            $z = new Variable();
             return $this->orLogic(
                 $father($a, $b),
                 $this->andLogic($father->prepare($a, $z), $this->prepare($z, $b))
