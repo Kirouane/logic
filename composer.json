@@ -1,11 +1,16 @@
 {
-    "require-dev": {
-        "phpunit/phpunit": "^8.1"
+    "config": {
+        "platform": {
+            "php": "7.1"
+        }
     },
-
     "autoload": {
         "psr-4": {
             "Logic\\": "src/"
         }
+    },
+    "require-dev": {
+        "phpro/grumphp": "^0.15.2",
+        "phpunit/phpunit": "^7.5"
     }
 }
