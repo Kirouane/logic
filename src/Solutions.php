@@ -28,4 +28,9 @@ class Solutions extends \ArrayObject
 
         return $array;
     }
+
+    public function found(): bool
+    {
+        return $this->count() > 0;
+    }
 }

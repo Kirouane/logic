@@ -9,5 +9,6 @@ parameters:
         git_blacklist:
             keywords:
                 - "die("
-                - "var_dump("
                 - "exit;"
+        phpstan:
+            ignore_patterns: ['tests', 'script']

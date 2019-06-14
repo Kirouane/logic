@@ -19,7 +19,7 @@ class FactsTest extends TestCase
      */
     public function queryOneArgementWithConstant($query, $expected)
     {
-        $color = new Facts('color', 1);
+        $color = new Facts();
 
         $color->is('blue');
         $color->is('red');
@@ -44,7 +44,7 @@ class FactsTest extends TestCase
      */
     public function queryTwoArgementWithConstant($query, $expected)
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('alice', 'mike');
         $father->is('pierre', 'paul');
@@ -54,35 +54,12 @@ class FactsTest extends TestCase
     }
 
 
-    public function arityProvider()
-    {
-        return [
-            [1, ['argment1'], false],
-            [1, ['argment1', 'argment2'], true],
-            [2, ['argment1', 'argment2'], false],
-            [2, ['argment1'], true],
-        ];
-    }
-
-    /**
-     * @test
-     * @dataProvider arityProvider
-     */
-    public function arity($arity, $arguments, $expectedException)
-    {
-        if ($expectedException) {
-            $this->expectException(\Exception::class);
-        }
-        $father = new Facts('father', $arity);
-        self::assertNull($father->is(...$arguments));
-    }
-
     /**
      * @test
      */
     public function queryOneArgementWithVariable()
     {
-        $color = new Facts('color', 1);
+        $color = new Facts();
 
         $color->is('blue');
         $color->is('red');
@@ -105,7 +82,7 @@ class FactsTest extends TestCase
      */
     public function queryTwoArgementWithVariable()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('john', 'paul');
@@ -127,7 +104,7 @@ class FactsTest extends TestCase
      */
     public function queryTwoArgementWithTwoVariable()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('john', 'paul');
@@ -148,7 +125,7 @@ class FactsTest extends TestCase
      */
     public function queryTwoArgementWithSameTwoVariable()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('john', 'paul');

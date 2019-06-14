@@ -13,7 +13,7 @@ class RuleTest extends TestCase
      */
     public function ruleFather()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('mike', 'paul');
@@ -21,7 +21,7 @@ class RuleTest extends TestCase
         $father->is('charles', 'jean');
 
 
-        $grandfather = new Rule('grandfather', function($x, $y) use($father) {
+        $grandfather = new Rule(function($x, $y) use($father) {
             /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
@@ -48,7 +48,7 @@ class RuleTest extends TestCase
      */
     public function ruleFatherWithConstantes()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('mike', 'paul');
@@ -56,7 +56,7 @@ class RuleTest extends TestCase
         $father->is('charles', 'jean');
 
 
-        $grandfather = new Rule('grandfather', function($x, $y) use($father) {
+        $grandfather = new Rule(function($x, $y) use($father) {
             /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
@@ -72,7 +72,7 @@ class RuleTest extends TestCase
      */
     public function ruleFatherTwoVariable()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('john', 'mike');
         $father->is('mike', 'paul');
@@ -80,7 +80,7 @@ class RuleTest extends TestCase
         $father->is('charles', 'jean');
 
 
-        $grandfather = new Rule('grandfather', function($x, $y) use($father) {
+        $grandfather = new Rule(function($x, $y) use($father) {
             /** @var RuleRunner $this */
             return $this->andLogic(
                 $father($x, '_Z'),
@@ -110,12 +110,12 @@ class RuleTest extends TestCase
      */
     public function ruleFilter()
     {
-        $color = new Facts('color', 1);
+        $color = new Facts();
         $color->is('red');
         $color->is('blue');
         $color->is('green');
 
-        $neighboor = new Rule('neighbour', function($x, $y) use($color) {
+        $neighboor = new Rule(function($x, $y) use($color) {
             /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
@@ -144,12 +144,12 @@ class RuleTest extends TestCase
      */
     public function ruleVariableFilter()
     {
-        $color = new Facts('color', 1);
+        $color = new Facts();
         $color->is('red');
         $color->is('blue');
         $color->is('green');
 
-        $neighboor = new Rule('neighbour', function($x, $y) use($color) {
+        $neighboor = new Rule(function($x, $y) use($color) {
             /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
@@ -195,12 +195,12 @@ class RuleTest extends TestCase
      */
     public function ruleMap()
     {
-        $color = new Facts('color', 1);
+        $color = new Facts();
         $color->is('red');
         $color->is('blue');
         $color->is('green');
 
-        $neighboor = new Rule('neighbour', function($x, $y) use($color) {
+        $neighboor = new Rule(function($x, $y) use($color) {
             /** @var RuleRunner $this */
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
@@ -210,7 +210,7 @@ class RuleTest extends TestCase
             );
         });
 
-        $country = new Rule('country', function($x, $y, $z) use($neighboor) {
+        $country = new Rule(function($x, $y, $z) use($neighboor) {
             /** @var RuleRunner $this */
             return $this->andLogic(
                 $this->andLogic($neighboor($x, $y), $neighboor($y, $z)),
@@ -240,16 +240,16 @@ class RuleTest extends TestCase
      */
     public function orRule()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
         $father->is('john', 'mike');
         $father->is('mike', 'paul');
 
-        $mother = new Facts('mother', 2);
+        $mother = new Facts();
         $mother->is('lara', 'amelie');
         $mother->is('pauline', 'alice');
 
 
-        $parent = new Rule('parent', function($x, $y) use($father, $mother) {
+        $parent = new Rule(function($x, $y) use($father, $mother) {
             /** @var RuleRunner $this */
             return $this->orLogic(
                 $father($x, $y),
@@ -303,7 +303,7 @@ class RuleTest extends TestCase
      */
     public function ancestor()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('achille', 'fabien');
         $father->is('fabien', 'john');
@@ -312,7 +312,7 @@ class RuleTest extends TestCase
         $father->is('mike', 'laure');
         $father->is('charles', 'jean');
 
-        $ancestor = new Rule('ancestor', function($a, $b) use($father) {
+        $ancestor = new Rule(function($a, $b) use($father) {
             /** @var RuleRunner $this */
             return $this->orLogic(
                 $father($a, $b),
@@ -347,7 +347,7 @@ class RuleTest extends TestCase
 
     public function ancestorWithRecursion()
     {
-        $father = new Facts('father', 2);
+        $father = new Facts();
 
         $father->is('achille', 'fabien');
         $father->is('fabien', 'john');
@@ -357,7 +357,7 @@ class RuleTest extends TestCase
         $father->is('mike', 'laure');
         $father->is('charles', 'jean');
 
-        $ancestor = new Rule('ancestor', function($a, $b) use($father) {
+        $ancestor = new Rule(function($a, $b) use($father) {
             $z = new Variable();
             return $this->orLogic(
                 $father($a, $b),
