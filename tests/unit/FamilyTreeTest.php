@@ -1,7 +1,8 @@
 <?php
 
 
-use Logic\Logic;
+use Logic\Facts;
+use Logic\Rule;
 use Logic\Variable;
 use PHPUnit\Framework\TestCase;
 
@@ -12,8 +13,7 @@ class FamilyTreeTest extends TestCase
      */
     public function scenario()
     {
-        $logic = new Logic();
-        $man = $logic->facts('man', 1);
+        $man = new Facts();
 
         $man->is('andre');
         $man->is('bernard');
@@ -26,7 +26,7 @@ class FamilyTreeTest extends TestCase
         $man->is('didier');
         $man->is('dagobert');
 
-        $woman = $logic->facts('woman', 1);
+        $woman = new Facts();
 
         $woman->is('augustine');
         $woman->is('becassine');
@@ -38,7 +38,7 @@ class FamilyTreeTest extends TestCase
         $woman->is('daniela');
         $woman->is('dominique');
 
-        $child = $logic->facts('child', 2);
+        $child = new Facts();
 
         $child->is('bernard', 'andre');
         $child->is('bernard', 'augustine');
@@ -67,19 +67,19 @@ class FamilyTreeTest extends TestCase
         $child->is('dominique', 'charlotte');
 
 
-        $parent = $logic->rule('parent', function($x, $y) use($child) {
+        $parent = new Rule(function($x, $y) use($child) {
             return $child($y, $x);
         });
 
-        $son = $logic->rule('son', function($x, $y) use($child, $man) {
+        $son = new Rule(function($x, $y) use($child, $man) {
             return $this->andLogic($child($y, $x), $man($x));
         });
 
-        $daughter = $logic->rule('daughter', function($x, $y) use($child, $woman) {
+        $daughter = new Rule(function($x, $y) use($child, $woman) {
             return $this->andLogic($child($y, $x), $woman($x));
         });
 
-        $ancestor = $logic->rule('ancestor', function($x, $y) use($parent) {
+        $ancestor = new Rule(function($x, $y) use($parent) {
             $z = new Variable();
             return $this->orLogic(
                 $parent($x, $y),

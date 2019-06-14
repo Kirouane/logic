@@ -7,31 +7,25 @@ namespace Logic;
 class Rule implements Clause
 {
     private $rule;
-    private $name;
 
-    public function __construct($name, callable $rule)
+    public function __construct(callable $rule)
     {
         $this->rule = $rule;
-        $this->name = $name;
     }
 
     public function __invoke(...$argments)
     {
-        $runner = new RuleRunner($this, new Arguments($argments), $this->rule);
-        try {
-            return $runner->run();
-        } catch (\Error $e) {
-            if ($this->isMaximumFunctionNesting($e)) {
-                return new Solutions();
-            }
-
-            throw $e;
+        if ($this->isMaximumFunctionNestingReached()) {
+            return new Solutions();
         }
+        $runner = new RuleRunner($this, new Arguments($argments), $this->rule);
+
+        return $runner->run();
 
     }
 
-    private function isMaximumFunctionNesting(\Error $e)
+    private function isMaximumFunctionNestingReached()
     {
-        return strpos($e->getMessage(), 'Maximum function nesting level of') !== false;
+        return xdebug_get_stack_depth() > ini_get('xdebug.max_nesting_level') - 20;
     }
 }

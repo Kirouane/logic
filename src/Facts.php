@@ -4,10 +4,6 @@ namespace Logic;
 
 class Facts extends \ArrayObject implements Clause
 {
-    /**
-     * @var string
-     */
-    private $name;
 
     /**
      * @var int
@@ -16,22 +12,10 @@ class Facts extends \ArrayObject implements Clause
 
     /** @noinspection MagicMethodsValidityInspection */
 
-    /**
-     * Fact constructor.
-     * @param string $name
-     * @param int $arity
-     */
-    public function __construct($name, $arity)
-    {
-        parent::__construct([]);
-        $this->name = $name;
-        $this->arity = $arity;
-
-    }
 
     public function is(...$constants)
     {
-        if (count($constants) !== $this->arity) {
+        if ($this->arity > 0 && count($constants) !== $this->arity) {
             throw new \OverflowException('Unexpected arity');
         }
 
