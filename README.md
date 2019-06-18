@@ -1,10 +1,7 @@
 Logic
 =====
 
-This PHP library was inspired by PROLOG which is a Logic Programming Language. It implements the core concept of Logic 
-Programming like unification and clause resolution.
-
-People who are accustomed with PROLOG will find the main features of this language.
+This PHP library is inspired by PROLOG which is a Logic Programming Language. People who are accustomed with PROLOG will find some interesting features.
 
 
 Install
@@ -15,7 +12,7 @@ Install
 Examples
 --------
 
-The examples below are based on this excellent [article](https://bernardopires.com/2013/10/try-logic-programming-a-gentle-introduction-to-prolog/) about PROLOG.
+The examples below are based on this excellent [post](https://bernardopires.com/2013/10/try-logic-programming-a-gentle-introduction-to-prolog/) about PROLOG.
 
 #### Example 1 : Queries
 
@@ -45,9 +42,7 @@ var_dump($likes('mary', 'john')->found());
 
 #### Example 2 : Variables
 
-Now, we want to know who Alive likes. Whe achieve this by   
-
-using variables. A variable must start with underscore **_** character. Let's see un example.
+Now, we want to know who Alice likes. We achieve this by using variables. A variable must start with underscore **_** character. Let's see un example.
 
 ```php
 /* Who does alice like? */

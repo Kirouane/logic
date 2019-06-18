@@ -4,6 +4,8 @@
 namespace Logic;
 
 
+use Logic\Clause\Filter;
+use Logic\Clause\Preparation;
 use Logic\Unification\AndLogic;
 use Logic\Unification\OrLogic;
 
@@ -29,9 +31,9 @@ class RuleRunner
         $this->rule = $rule;
     }
 
-    public function __invoke(...$argments)
+    public function __invoke(...$arguments)
     {
-        return ($this->rule)(...$argments);
+        return ($this->rule)(...$arguments);
     }
 
     public function run()
@@ -41,12 +43,12 @@ class RuleRunner
         );
     }
 
-    public function prepare(...$arguments): callable
+    public function prepare(...$arguments)
     {
 
-        return function() use($arguments) {
+        return new Preparation(function() use($arguments) {
             return ($this->rule)(...$arguments);
-        };
+        });
     }
 
 
@@ -58,8 +60,8 @@ class RuleRunner
 
         $result = reset($clauses);
 
-        if (is_callable($result) && !$result instanceof Clause) {
-            $result = $result();
+        if ($result instanceof Preparation) {
+            $result = $result->run();
             if (!$result->count()) {
                 return new Solutions();
             }
@@ -73,8 +75,9 @@ class RuleRunner
                 continue;
             }
 
-            if (is_callable($clause) && !$clause instanceof Clause) {
-                $clause = $clause();
+
+            if ($clause instanceof Preparation) {
+                $clause = $clause->run();
                 if (!$clause->count()) {
                     return new Solutions();
                 }

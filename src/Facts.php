@@ -2,6 +2,8 @@
 
 namespace Logic;
 
+use Logic\Clause\Preparation;
+
 class Facts extends \ArrayObject implements Clause
 {
 
@@ -36,11 +38,11 @@ class Facts extends \ArrayObject implements Clause
         return $solutions;
     }
 
-    public function prepare(...$arguments): callable
+    public function prepare(...$arguments)
     {
-        return function() use($arguments) {
+        return new Preparation(function() use($arguments) {
             return ($this)(...$arguments);
-        };
+        });
     }
 
 

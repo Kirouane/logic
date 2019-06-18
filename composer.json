@@ -1,4 +1,22 @@
 {
+    "name": "kirouane/logic",
+    "description": "PROLOG adaptation",
+    "type": "library",
+    "keywords": [
+        "php", "prolog", "logic programming", "logic"
+    ],
+    "homepage": "https://github.com/Kirouane/logic",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "nassim.kirouane",
+            "email": "nassim.kirouane@gmail.com",
+            "role": "lead"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/Kirouane/logic/issues"
+    },
     "config": {
         "platform": {
             "php": "7.1"

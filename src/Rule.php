@@ -18,6 +18,7 @@ class Rule implements Clause
         if ($this->isMaximumFunctionNestingReached()) {
             return new Solutions();
         }
+
         $runner = new RuleRunner($this, new Arguments($argments), $this->rule);
 
         return $runner->run();
