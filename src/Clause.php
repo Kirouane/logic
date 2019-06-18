@@ -7,4 +7,5 @@ namespace Logic;
 interface Clause
 {
 
+
 }

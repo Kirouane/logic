@@ -116,7 +116,7 @@ class RuleTest extends TestCase
         $color->is('green');
 
         $neighboor = new Rule(function($x, $y) use($color) {
-            /** @var RuleRunner $this */
+
             return $this->filter(
                 $this->andLogic($color($x), $color($y)),
                 function($x, $y){
@@ -124,7 +124,6 @@ class RuleTest extends TestCase
                 }
             );
         });
-
         self::assertSame(
             [
                 [
